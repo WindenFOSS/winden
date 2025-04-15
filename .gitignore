@@ -1,0 +1,15 @@
+node_modules/
+backups/
+logs/
+*.log
+winden.*
+*.db
+*.sqlite
+storage/
+temp/
+*.lockb
+*.lock
+*.rdb
+package-lock.json
+config.toml
+.DS_Store

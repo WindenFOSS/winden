@@ -1,0 +1,177 @@
+# ═════════════════════════════════════════════════════════
+#                       Winden Config            
+#          This config will work with Winden 0.1.0 
+#         or any Aurora based distribution. (70+)        
+# ═════════════════════════════════════════════════════════
+
+# ---------------------------------
+# General Configuration
+# ---------------------------------
+name = "Winden" # Website/dashboard name
+auto_update = false # Automatically update Winden on boot
+
+# ---------------------------------
+# Winden Release Information
+# ---------------------------------
+platform_codename = "Aurora"
+platform_level = 70 # channel: stable - 01-04-2024 (Aurora)
+version = "0.1.0"
+
+# ---------------------------------
+# Additional Settings
+# ---------------------------------
+# For PostgreSQL connection, use one of the following formats:
+# Connection string format: "postgresql://username:password@localhost:5432/winden"
+# Or object format as shown below in [database] section
+database = "postgresql://postgres:postgres@localhost:5432/winden"
+
+# Optional: Full database configuration object (alternative to connection string above)
+[database]
+host = "localhost"
+port = 5432
+user = "postgres"
+password = "postgres"
+database = "winden"
+
+# ---------------------------------
+# Pterodactyl Settings
+# ---------------------------------
+[pterodactyl]
+domain = "https://panel.example.com" # Format: https://panel.domain.tld with no / on the end
+key = "ptla_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # Find this under Admin -> Application API
+client_key = "ptlc_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # Create an admin account and generate from Account -> API Keys
+
+# ---------------------------------
+# Webserver Configuration
+# ---------------------------------
+[website]
+port = 25_001 # Default: 25_001
+secret = "CHANGE_THIS_SECRET" # Change this - do not run Winden in production with the default secret
+domain = "https://example.com"
+
+# ---------------------------------
+# API Client Settings
+# ---------------------------------
+[api.client]
+accountSwitcher = true
+
+  [api.client.resend]
+  # ---------------------------------
+  # Resend API Key
+  #
+  # This is required, but no worries as Resend is free.
+  # ---------------------------------
+  api_key = "re_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxx"
+  from = "noreply@example.com"
+  app_name = "Winden"
+
+  [api.client.api] # Winden API version 5
+  enabled = true
+  code = "YOUR_API_KEY"
+
+  [api.client.passwordgenerator]
+  signup = true # Disable user signups
+  length = 24
+
+  [api.client.allow]
+  regen = true # Allow users to regenerate their SFTP/panel password
+  overresourcessuspend = false # Suspend users if they go over resource limits
+
+    [api.client.allow.server]
+    create = true
+    modify = true
+    delete = true
+
+  [api.client.packages]
+  default = "default" # Default package assigned to users
+
+# ---------------------------------
+# Package Configuration
+# ---------------------------------
+[api.client.packages.list.default]
+ram = 4_096
+disk = 20_480
+cpu = 150
+servers = 2
+
+# -----------------------------------------------------
+# Location Configuration
+# -----------------------------------------------------
+[api.client.locations.1]
+name = "Example Location"
+
+# ---------------------------------
+# Egg Configuration
+# ---------------------------------
+
+# Paper
+[api.client.eggs.paper]
+display = "Minecraft: Java Edition - Paper"
+
+  [api.client.eggs.paper.minimum]
+  ram = 1_024
+  disk = 1_024
+  cpu = 80
+
+  [api.client.eggs.paper.info]
+  egg = 2
+  docker_image = "ghcr.io/pterodactyl/yolks:java_21"
+  startup = "java -Xms128M -Xmx{{SERVER_MEMORY}}M -Dterminal.jline=false -Dterminal.ansi=true -jar {{SERVER_JARFILE}}"
+
+    [api.client.eggs.paper.info.environment]
+    SERVER_JARFILE = "server.jar"
+    BUILD_NUMBER = "latest"
+
+    [api.client.eggs.paper.info.feature_limits]
+    databases = 4
+    backups = 4
+
+# Add more eggs the same way as Paper above
+
+# ---------------------------------
+# Coin Configuration
+# ---------------------------------
+[api.client.coins]
+enabled = true
+
+    [api.client.coins.store]
+    enabled = true
+
+      [api.client.coins.store.ram]
+      cost = 775
+
+      [api.client.coins.store.disk]
+      cost = 400
+
+      [api.client.coins.store.cpu]
+      cost = 650
+
+      [api.client.coins.store.servers]
+      cost = 300
+
+# ---------------------------------
+# Logging Configuration
+# ---------------------------------
+[logging]
+status = true
+webhook = "https://discord.com/api/webhooks/your_webhook_url"
+
+[logging.actions.user]
+signup = true
+"create server" = true
+"gifted coins" = true
+"modify server" = true
+"buy servers" = true
+"buy ram" = true
+"buy cpu" = true
+"buy disk" = true
+
+[logging.actions.admin]
+"set coins" = true
+"add coins" = true
+"set resources" = true
+"set plan" = true
+"create coupon" = true
+"revoke coupon" = true
+"remove account" = true
+"view ip" = true
